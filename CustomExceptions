@@ -1,0 +1,18 @@
+
+namespace TicTacToe
+{
+    class CustomExceptions : ApplicationException
+    {
+        public CustomExceptions()
+        {
+            Console.WriteLine("An Error Has Occured");
+        }
+
+        public void BadMoveException(int pos, int player)
+        {
+            Console.WriteLine("Position {1} is already occupied by Player {0}", player, pos);
+            Console.WriteLine("Try Again");
+        }
+    
+    }
+}
