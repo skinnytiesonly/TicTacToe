@@ -1,0 +1,138 @@
+using System;
+using System.Security.Cryptography.X509Certificates;
+
+namespace TicTacToe
+{
+    internal class Game
+    {
+        char[,] grid = new char[3,3];
+        public Game()
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                for (int y = 0; y < 3; y++)
+                {
+                    grid[x, y] = '.';
+                }
+            }
+        }
+
+        public bool Ended()
+        {
+            //win conditions
+           for (int i = 0; i < 3; i++)
+            {
+                if (grid[i,0] == 'X' && grid[i,1] == 'X' && grid[i,2] == 'X')
+                {
+                    return true;
+                }
+                else if (grid[i, 0] == 'O' && grid[i, 1] == 'O' && grid[i, 2] == 'O')
+                {
+                    return true;
+                }
+                else
+                {
+                    continue;
+                }
+                
+            }//end rows win
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (grid[0, i] == 'X' && grid[1, i] == 'X' && grid[2,i] == 'X')
+                {
+                    return true;
+                }
+                else if (grid[0, i] == 'O' && grid[1, i] == 'O' && grid[2, i] == 'O')
+                {
+                    return true;
+                }
+                else
+                {
+                    continue;
+                }
+
+            }//end columns win
+            if (grid[0,0] == 'X' && grid[1,1] == 'X' && grid[2,2] == 'X')
+            {
+                return true;
+            }//diagonal win
+           
+            if (grid[0, 2] == 'X' && grid[1, 1] == 'X' && grid[2, 0] == 'X')
+            {
+                return true;
+            }//diagonal win
+          
+
+            return false;
+        }
+
+
+        internal void Move(int position, char player)
+        {
+            //TBD: This function needs validation
+            //1. Position needs to be in the range 0..9 - if not throw an ArgumentException
+            //2. The grid cell needs to be unoccupied - if not throw a BadMoveException
+            //    .Net does not have a BadMoveException so you must define a custom exception class
+            
+            if (position < 0 || position > 8)
+            {
+                throw new ArgumentException(String.Format("{0} is not within range", position), "position");//index out of range exception 
+            }
+            else if (position >= 0 && position < 9)
+            {
+                if (grid[position % 3, (position / 3)] == '.')
+                {
+                    grid[position % 3, (position / 3)] = player;
+                }
+                else
+                {
+                   throw new CustomExceptions();//BadMove Exception
+                }
+            }
+            else
+            {
+                throw new Exception("Unknown Error");
+            }
+           
+            
+        }//end Move()
+
+        public void Print()
+        {
+            //Console.Clear();
+
+            Console.WriteLine("Key");
+            int cell = 0;
+            for (int y = 0; y < 3; y++)
+            {
+                if (y >= 1) Console.WriteLine("---+---+---");
+                for (int x = 0; x < 3; x++)
+                {
+                    if (x >= 1) Console.Write("|");
+                    Console.Write(" {0} ", cell++);
+                }
+                Console.WriteLine();
+            }
+
+
+            Console.WriteLine();
+            for (int y = 0; y < 3; y++)
+            {
+                if (y >= 1) Console.WriteLine("---+---+---");
+                for (int x = 0; x < 3; x++)
+                {
+                    if (x >= 1) Console.Write("|");
+                    Console.Write(" {0} ", grid[x,y]);
+                }
+                Console.WriteLine();
+            }
+
+
+
+
+
+        }
+
+    }
+}
