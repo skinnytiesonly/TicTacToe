@@ -1,0 +1,83 @@
+
+namespace TicTacToe
+{
+    class Program
+    {
+        static void Main()
+        {
+            var game = new Game();
+            var player = 'X';
+            while (!game.Ended())
+            {
+                Console.WriteLine();
+                game.Print();
+
+                //Get an integer position
+                Console.Write("Enter your move:");
+                string input;
+                int position;
+                do
+                {
+                    input = Console.ReadLine();
+                } while (!int.TryParse(input, out position));
+
+                //TBD: Handle the Exceptions:
+                //1. Once you have implemented exceptions in game.Move() you must catch the ones you expect to see here 
+                //and handle them with suitable error messages
+                //2. Also handle any unexpected exceptions with an "Unknown Error" message. Work out a way to test that code!
+                try
+                {
+                    Console.Clear();//only clears before a turn you you can read the exception errors
+                    game.Move(position, player);
+                }
+                catch (ArgumentException a)
+                {
+                    Console.WriteLine("{0}:{1}", a.GetType().Name, a.Message);
+                    player = (player == 'X') ? 'O' : 'X';
+                }
+               
+                catch (CustomExceptions bm)
+                {
+                    if (player == 'X')
+                    {
+                        bm.BadMoveException(position,2);
+                    }
+                    else
+                    {
+                        bm.BadMoveException(position,1);
+                    }
+
+                  
+                    player = (player == 'X') ? 'O' : 'X';
+                }
+                
+                catch (Exception e)
+                {
+                    Console.WriteLine("{0}", e.Message); 
+                    player = (player == 'X') ? 'O' : 'X';
+                }
+                
+
+
+                //Switch players
+                player = (player == 'X') ? 'O' : 'X';
+
+                
+            }//end while
+
+            game.Print();
+
+            //declare winner
+
+            if (player == 'X')
+            {
+                Console.WriteLine("Player 2 has Won!");
+            }
+            else
+            {
+                Console.WriteLine("Player 1 has Won!");
+            }
+            
+        }
+    }
+}
